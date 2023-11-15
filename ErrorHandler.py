@@ -1,3 +1,7 @@
 class RaiseError:
     def END_OF_FILE():
-       print("End of file")
+       print("Error : End of file")
+       exit(0)
+    def OPEN_COMMENT_FIELD():
+        print("Error : Bracket not closed")
+        exit(1)
