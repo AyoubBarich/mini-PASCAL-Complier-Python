@@ -4,7 +4,7 @@ CARLU=''
 NUM_LIGNE=0
 INDEX = 0
 
-class SyntaxAnalayser:
+class SyntaxAnalayser():
 
     def __init__(self,program_file_path):
         self.prog = Reader(program_file_path).content
@@ -38,10 +38,13 @@ class SyntaxAnalayser:
             counter = 0 
             if self.prog[INDEX] == '{':
                 counter += 1
-                while counter != 0:        
-                    if self.prog[INDEX] == '}':
-                        counter -= 1
-                    INDEX += 1
+            while counter != 0:        
+                if self.prog[INDEX] == '}':
+                    counter -= 1
+                elif self.prog[INDEX] == '{':
+                    counter += 1
+                INDEX += 1
+
                     
             
 
