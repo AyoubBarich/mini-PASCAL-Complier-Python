@@ -13,7 +13,7 @@ class SyntaxAnalayser():
 
 
 
-    def LIRE_CAR(self,index):
+    def LIRE_CAR(self):
         global CARLU
         global NUM_LIGNE
         global INDEX
@@ -74,5 +74,5 @@ class SyntaxAnalayser():
 
 
 
-SyntaxAnalayser("./ExampleProg.txt")
+SyntaxAnalayser("./CommentsTest.txt")
 print("CARLU",CARLU)
