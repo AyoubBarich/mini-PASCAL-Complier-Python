@@ -19,18 +19,22 @@ class SyntaxAnalayser():
         # global CARLU
         global NUM_LIGNE
         global INDEX
+        
         if INDEX < len(self.prog):
-            
             match self.prog[INDEX]:
                 case '\n':
                     NUM_LIGNE+=1
+                    
                 case ' '|'    ':
                     self.SAUTER_SEPARATEUR()
+                    
                 case '{':
                     self.SAUTER_COMMENT()
-            print(self.prog[INDEX])
+            if INDEX < len(self.prog):
+                print(self.prog[INDEX])
+            else:
+                RaiseError.END_OF_FILE()
             INDEX += 1
-                    
         else:
             RaiseError.END_OF_FILE()
 
@@ -49,7 +53,7 @@ class SyntaxAnalayser():
     
     def SAUTER_COMMENT(self):
         global INDEX 
-        counter = 0
+        counter = 1
         while counter != 0 :  
             if INDEX < len(self.prog):
                 if self.prog[INDEX] == '{':
@@ -58,11 +62,8 @@ class SyntaxAnalayser():
                     counter -= 1
                 INDEX += 1
             else:
-                
                 break;
-            print("counter",counter)
-        INDEX += 1
-        if (counter !=0):
+        if (counter !=1):
             RaiseError.OPEN_COMMENT_FIELD()
 
 
