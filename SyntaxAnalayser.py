@@ -66,11 +66,22 @@ class SyntaxAnalayser():
             RaiseError.OPEN_COMMENT_FIELD()
 
 
+    def is_entier(self) : 
+        return self.prog[INDEX] == '0' | self.prog[INDEX] == '1' | self.prog[INDEX] == '2'| self.prog[INDEX] == '3' | self.prog[INDEX] == '4' | self.prog[INDEX] == '5' | self.prog[INDEX] == '6' | self.prog[INDEX] == '7' | self.prog[INDEX] == '8'| self.prog[INDEX] == '9' 
+
+    def RECO_ENTIER(self) :
+        global INDEX
+        x=''
+        while (INDEX < len(self.prog) and self.is_entier()) :
+            x = x + str(INDEX)
+            INDEX += 1 
+
+
                 
             
             
 
-        
+       
 
            
         
