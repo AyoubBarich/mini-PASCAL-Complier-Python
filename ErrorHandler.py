@@ -5,3 +5,7 @@ class RaiseError:
     def OPEN_COMMENT_FIELD():
         print("Error : Bracket not closed")
         exit(1)
+
+    def MAXINT():
+        print("Surpassed max integer value")
+        exit(1)
