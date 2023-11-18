@@ -9,3 +9,6 @@ class RaiseError:
     def MAXINT():
         print("Surpassed max integer value")
         exit(1)
+    def MAX_LEN_STR_REACHED():
+        print("Surpassed max string lenght")
+        exit(1)

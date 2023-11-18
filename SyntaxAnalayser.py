@@ -7,6 +7,8 @@ NUM_LIGNE=0
 INDEX = 0
 NOMBRE = None
 MAXINT= 32767
+CHAINE=''
+MAXLENSTR=50
 TestPathComments = "./CommentsTest.txt"
 TestPathNumberTest = "./NumberTest.txt"
 TestPathProgram = "./ExampleProg.txt"
@@ -27,6 +29,7 @@ class SyntaxAnalayser():
         
         if not self.end():
             match self.prog[INDEX]:
+                
                 case '\n':
                     NUM_LIGNE+=1
                     INDEX += 1
@@ -39,7 +42,10 @@ class SyntaxAnalayser():
                 case '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9':
                     self.RECO_ENTIER()
                     print("Nombre",NOMBRE)
+                case '\'':
+                    self.RECO_CHAINE()
                 case _:
+                    print(self.prog[INDEX])
                     INDEX += 1
             
 
@@ -66,15 +72,18 @@ class SyntaxAnalayser():
         global INDEX 
         counter = 1
         while counter != 0 :  
+
             if not self.end():
+                print('dans commentaire',self.prog[INDEX])
+                print(counter)
                 if self.prog[INDEX] == '{':
                     counter += 1      
                 elif self.prog[INDEX] == '}':
-                    counter -= 1
+                    counter -= 2
                 INDEX += 1
             else:
-                break;
-        if (counter !=1):
+                break
+        if (counter !=0):
             RaiseError.OPEN_COMMENT_FIELD()
 
 
@@ -99,6 +108,35 @@ class SyntaxAnalayser():
             RaiseError.MAXINT()
         return (TYPE.ent ,NOMBRE)
 
+    def RECO_CHAINE(self):
+        CHAINE =''
+        global INDEX
+    
+        while not self.end():
+            
+            CHAINE+=self.prog[INDEX]
+            INDEX+=1
+            while not self.end() and self.prog[INDEX] != '\'':
+                CHAINE+=self.prog[INDEX]
+                INDEX+=1
+            if not self.end():
+                if self.prog[INDEX] == '\'':
+                    if not self.end() and self.prog[INDEX+1] != '\'':
+                        INDEX+=1
+                        CHAINE+=self.prog[INDEX]
+                        break
+                    elif not self.end() :
+                        CHAINE += '\"'
+                        INDEX+=1
+
+
+        if len(CHAINE) > MAXLENSTR:
+            print('CHAINE = ',CHAINE)
+            RaiseError.MAX_LEN_STR_REACHED()
+        print('CHAINE = ',CHAINE)
+        return (TYPE.ch , CHAINE)
+
+
 
                 
             
@@ -118,5 +156,5 @@ class SyntaxAnalayser():
 ######################Test#########################
 
 
-sy =SyntaxAnalayser(TestPathNumberTest)
+sy =SyntaxAnalayser(TestPathProgram)
 
