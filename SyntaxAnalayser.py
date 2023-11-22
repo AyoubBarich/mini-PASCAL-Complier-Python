@@ -3,11 +3,12 @@ from Reader import Reader
 from ErrorHandler import RaiseError
 from Tokens import TYPE
 # CARLU=''
-NUM_LIGNE=0
+NUM_LIGNE = None
 INDEX = 0
 NOMBRE = None
 MAXINT= 32767
 CHAINE=''
+TABLE_DE_MOTS_RESERVES = []
 MAXLENSTR=500000
 TestPathComments = "./CommentsTest.txt"
 TestPathNumberTest = "./NumberTest.txt"
@@ -19,8 +20,20 @@ class SyntaxAnalayser():
         while True:
             self.LIRE_CAR()
 
-
-
+    def INITIALISER(self,program_file_path):
+        global TABLE_DE_MOTS_RESERVES
+        global NUM_LIGNE
+        self.prog = Reader(program_file_path).content
+        NUM_LIGNE = 0
+        self.INSERER_MOTS_RESERVES('PROGRAMME')
+        self.INSERER_MOTS_RESERVES('DEBUT')
+        self.INSERER_MOTS_RESERVES('FIN')
+        self.INSERER_MOTS_RESERVES('CONST')
+        self.INSERER_MOTS_RESERVES('VAR')
+        self.INSERER_MOTS_RESERVES('ECRIRE')
+        self.INSERER_MOTS_RESERVES('LIRE')
+        while True :
+            self.LIRE_CAR()
 
     def LIRE_CAR(self):
         # global CARLU
@@ -56,13 +69,20 @@ class SyntaxAnalayser():
         else:
             RaiseError.END_OF_FILE()
 
+    def TERMINER(self):
+        return self.folder.close() 
+
+    def INSERER_MOTS_RESERVES(self, mot):
+        global TABLE_DE_MOTS_RESERVES
+        TABLE_DE_MOTS_RESERVES.append(mot)
+        return TABLE_DE_MOTS_RESERVES.sort()
 
     def is_seperateur(self):
          global INDEX
          return (self.prog[INDEX] == ' ' )| (self.prog[INDEX] == '    ') | (self.prog[INDEX] == '\n')
     # def is_comment(self):
     #     return self.prog[INDEX] == '{'
- 
+
     def SAUTER_SEPARATEUR(self):
         global INDEX
         while not self.end() and self.is_seperateur() :
@@ -85,7 +105,6 @@ class SyntaxAnalayser():
                 break
         if (counter !=0):
             RaiseError.OPEN_COMMENT_FIELD()
-
 
     def is_entier(self) : 
         return (self.prog[INDEX] == '0') |( self.prog[INDEX] == '1') | (self.prog[INDEX] == '2')| (self.prog[INDEX] == '3') | (self.prog[INDEX] == '4') | (self.prog[INDEX] == '5') | (self.prog[INDEX] == '6') | (self.prog[INDEX] == '7') | (self.prog[INDEX] == '8')| (self.prog[INDEX] == '9') 
@@ -142,7 +161,11 @@ class SyntaxAnalayser():
             print('CHAINE = ',CHAINE)
         return (TYPE.ch , CHAINE)
     
+    def RECO_IDENT_OU_MOT_RESERVE(self):
+        global INDEX
+        chaîne = ''
 
+        return
 
     def RECO_SYMB(self):
         global INDEX
@@ -187,6 +210,8 @@ class SyntaxAnalayser():
             return 'point'
         elif self.prog[INDEX] == '.':
             return 'point'
+        
+
         
 
 
