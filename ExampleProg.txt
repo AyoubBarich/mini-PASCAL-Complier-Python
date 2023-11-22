@@ -6,5 +6,5 @@ DEBUT
     nb := nb*nb;
     {this a comment}
     ECRIRE();
-    ECRIRE('Le carré du nombre est: ', nb);
+    ECRIRE('L'e carré du nombre est: ', nb);
 FIN
