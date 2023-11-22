@@ -8,7 +8,7 @@ INDEX = 0
 NOMBRE = None
 MAXINT= 32767
 CHAINE=''
-MAXLENSTR=50
+MAXLENSTR=500000
 TestPathComments = "./CommentsTest.txt"
 TestPathNumberTest = "./NumberTest.txt"
 TestPathProgram = "./ExampleProg.txt"
@@ -109,7 +109,7 @@ class SyntaxAnalayser():
         return (TYPE.ent ,NOMBRE)
 
     def RECO_CHAINE(self):
-        CHAINE =''
+        CHAINE =""
         global INDEX
     
         while not self.end():
@@ -124,30 +124,70 @@ class SyntaxAnalayser():
                     if not self.end() and self.prog[INDEX+1] != '\'':
                         INDEX+=1
                         CHAINE+=self.prog[INDEX]
+                        if len(CHAINE) > MAXLENSTR:
+                            print('CHAINE = ',CHAINE)
+                            RaiseError.MAX_LEN_STR_REACHED()
+                        else : 
+                            print('CHAINE = ',CHAINE)
+                            return (TYPE.ch , CHAINE)
                         break
                     elif not self.end() :
                         CHAINE += '\"'
                         INDEX+=1
 
-
         if len(CHAINE) > MAXLENSTR:
             print('CHAINE = ',CHAINE)
             RaiseError.MAX_LEN_STR_REACHED()
-        print('CHAINE = ',CHAINE)
+        else : 
+            print('CHAINE = ',CHAINE)
         return (TYPE.ch , CHAINE)
+    
 
 
-
-                
-            
-            
-
-       
-
-           
+    def RECO_SYMB(self):
+        global INDEX
+        if self.prog[INDEX] ==';' :
+            return TYPE.ptvirg
+        elif self.prog[INDEX] == '.':
+            return TYPE.point
+        elif self.prog[INDEX] == '(':
+            return TYPE.parouv
+        elif self.prog[INDEX] == ')':
+            return TYPE.parfer
+        elif self.prog[INDEX] == '<':
+            if self.prog[INDEX+1] == '=' : 
+                return TYPE.infe
+            elif self.prog[INDEX+1] == '>' :
+                return TYPE.diff
+            else :
+                return TYPE.inf
+        elif self.prog[INDEX] == '>':
+            if self.prog[INDEX+1] == '=' : 
+                return TYPE.supe
+            else :
+                return TYPE.sup
+        elif self.prog[INDEX] == '=':
+            return TYPE.eg
+        elif self.prog[INDEX] == '+':
+            return TYPE.plus
+        elif self.prog[INDEX] == '-':
+            return TYPE.moins
+        elif self.prog[INDEX] == '*':
+            return TYPE.mult
+        elif self.prog[INDEX] == '/':
+            return TYPE.divi
+        elif self.prog[INDEX] == ':':
+            if self.prog[INDEX+1] == '=':
+                return TYPE.aff
+            else :
+                return TYPE.deuxpts
+        elif self.prog[INDEX] == 'supe':
+            return 'point'
+        elif self.prog[INDEX] == '.':
+            return 'point'
+        elif self.prog[INDEX] == '.':
+            return 'point'
         
-                
-
 
 
 
@@ -156,5 +196,5 @@ class SyntaxAnalayser():
 ######################Test#########################
 
 
-sy =SyntaxAnalayser(TestPathProgram)
-
+#sy = SyntaxAnalayser(TestPathProgram)
+print(SyntaxAnalayser.RECO_CHAINE('Ayoub is incroyable'))
