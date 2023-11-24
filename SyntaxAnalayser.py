@@ -3,12 +3,13 @@ from Reader import Reader
 from ErrorHandler import RaiseError
 from Tokens import TYPE
 # CARLU=''
-NUM_LIGNE = None
+NUM_LIGNE = 0
 INDEX = 0
 NOMBRE = None
 MAXINT= 32767
 CHAINE=''
-TABLE_DE_MOTS_RESERVES = []
+MOTS = ['CONST' ,'DEBUT','ECRIRE','FIN' ,'LIRE','PROGRAMME','VAR']
+TABLE_DES_MOTS_RESERVES = MOTS.sort()
 MAXLENSTR=500000
 TestPathComments = "./CommentsTest.txt"
 TestPathNumberTest = "./NumberTest.txt"
@@ -20,20 +21,28 @@ class SyntaxAnalayser():
         while True:
             self.LIRE_CAR()
 
-    def INITIALISER(self,program_file_path):
-        global TABLE_DE_MOTS_RESERVES
-        global NUM_LIGNE
-        self.prog = Reader(program_file_path).content
-        NUM_LIGNE = 0
-        self.INSERER_MOTS_RESERVES('PROGRAMME')
-        self.INSERER_MOTS_RESERVES('DEBUT')
-        self.INSERER_MOTS_RESERVES('FIN')
-        self.INSERER_MOTS_RESERVES('CONST')
-        self.INSERER_MOTS_RESERVES('VAR')
-        self.INSERER_MOTS_RESERVES('ECRIRE')
-        self.INSERER_MOTS_RESERVES('LIRE')
-        while True :
-            self.LIRE_CAR()
+    # def INSERER_MOTS_RESERVES(self, mot):
+    #     global TABLE_DE_MOTS_RESERVES
+    #     TABLE_DE_MOTS_RESERVES.append(mot)
+    #     return TABLE_DE_MOTS_RESERVES.sort()
+
+    # def INITIALISER(self,program_file_path):
+    #     global TABLE_DE_MOTS_RESERVES
+    #     global NUM_LIGNE
+    #     self.prog = Reader(program_file_path).content
+    #     NUM_LIGNE = 0
+    #     self.INSERER_MOTS_RESERVES('PROGRAMME')
+    #     self.INSERER_MOTS_RESERVES('DEBUT')
+    #     self.INSERER_MOTS_RESERVES('FIN')
+    #     self.INSERER_MOTS_RESERVES('CONST')
+    #     self.INSERER_MOTS_RESERVES('VAR')
+    #     self.INSERER_MOTS_RESERVES('ECRIRE')
+    #     self.INSERER_MOTS_RESERVES('LIRE')
+    #     while True :
+    #         self.LIRE_CAR()
+
+    # def TERMINER(self):
+    #     return self.folder.close() 
 
     def LIRE_CAR(self):
         # global CARLU
@@ -68,14 +77,6 @@ class SyntaxAnalayser():
                 RaiseError.END_OF_FILE()
         else:
             RaiseError.END_OF_FILE()
-
-    def TERMINER(self):
-        return self.folder.close() 
-
-    def INSERER_MOTS_RESERVES(self, mot):
-        global TABLE_DE_MOTS_RESERVES
-        TABLE_DE_MOTS_RESERVES.append(mot)
-        return TABLE_DE_MOTS_RESERVES.sort()
 
     def is_seperateur(self):
          global INDEX
@@ -221,5 +222,4 @@ class SyntaxAnalayser():
 ######################Test#########################
 
 
-#sy = SyntaxAnalayser(TestPathProgram)
-print(SyntaxAnalayser.RECO_CHAINE('Ayoub is incroyable'))
+sy = SyntaxAnalayser(TestPathProgram)
