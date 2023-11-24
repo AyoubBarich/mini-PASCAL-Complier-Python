@@ -3,6 +3,8 @@ from Reader import Reader
 from ErrorHandler import RaiseError
 from Tokens import TYPE
 import string
+from IdentTable import IdentTable
+from Ident import Ident
 
 # CARLU=''
 NUM_LIGNE=0
@@ -18,11 +20,14 @@ TestPathProgram = "./ExampleProg.txt"
 ALPHABET = list(string.ascii_letters)
 TABLE_MOTS_RESERVES = ['CONST' ,'DEBUT','ECRIRE','FIN' ,'LIRE','PROGRAMME','VAR']
 
+TABLE_IDENT = IdentTable()
 class SyntaxAnalayser():
 
     def __init__(self,program_file_path):
         self.prog = Reader(program_file_path).content
         while True:
+            print(TABLE_IDENT.table_ident)
+
             self.LIRE_CAR()
         
 
@@ -184,10 +189,9 @@ class SyntaxAnalayser():
             RaiseError.MAX_LEN_IDENT_REACHED()
 
         if EST_MOT_RESERVE(CHAINE):
-            return TYPE.ident
-        
-        return TYPE.motcle
-
+            return TYPE.motcle
+        TABLE_IDENT.insert(Ident(CHAINE))
+        return TYPE.ident
         
     def condition(self):
         global INDEX
