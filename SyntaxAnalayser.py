@@ -11,17 +11,43 @@ NOMBRE = None
 MAXINT= 32767
 CHAINE=''
 MAXLENSTR=50
+LEN_MAX_IDENT = 20
 TestPathComments = "./CommentsTest.txt"
 TestPathNumberTest = "./NumberTest.txt"
 TestPathProgram = "./ExampleProg.txt"
 ALPHABET = list(string.ascii_letters)
+TABLE_MOTS_RESERVES = ['CONST' ,'DEBUT','ECRIRE','FIN' ,'LIRE','PROGRAMME','VAR']
+
 class SyntaxAnalayser():
 
     def __init__(self,program_file_path):
         self.prog = Reader(program_file_path).content
-        print(ALPHABET)
         while True:
             self.LIRE_CAR()
+        
+
+    # def INSERER_MOTS_RESERVES(self, mot):
+    #     global TABLE_DE_MOTS_RESERVES
+    #     TABLE_DE_MOTS_RESERVES.append(mot)
+    #     return TABLE_DE_MOTS_RESERVES.sort()
+
+    # def INITIALISER(self,program_file_path):
+    #     global TABLE_DE_MOTS_RESERVES
+    #     global NUM_LIGNE
+    #     self.prog = Reader(program_file_path).content
+    #     NUM_LIGNE = 0
+    #     self.INSERER_MOTS_RESERVES('PROGRAMME')
+    #     self.INSERER_MOTS_RESERVES('DEBUT')
+    #     self.INSERER_MOTS_RESERVES('FIN')
+    #     self.INSERER_MOTS_RESERVES('CONST')
+    #     self.INSERER_MOTS_RESERVES('VAR')
+    #     self.INSERER_MOTS_RESERVES('ECRIRE')
+    #     self.INSERER_MOTS_RESERVES('LIRE')
+    #     while True :
+    #         self.LIRE_CAR()
+
+    # def TERMINER(self):
+    #     return self.folder.close() 
 
 
 
@@ -44,19 +70,17 @@ class SyntaxAnalayser():
                     
                 case '{':
                     self.SAUTER_COMMENT()
+                    print(self.prog[INDEX])
                 case '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9':
                     self.RECO_ENTIER()
                     #print("Nombre",NOMBRE)
                 case '\'':
                     self.RECO_CHAINE()
-
-            if self.prog[INDEX] in ALPHABET:
-                self.RECO_IDENT_OU_MOT_RESERVE()
-            else :
-                INDEX +=1
-
-            
-
+                case _:
+                    if self.prog[INDEX] in ALPHABET:
+                        self.RECO_IDENT_OU_MOT_RESERVE()                
+                    self.RECO_SYMB()
+                    INDEX+=1
             # if not self.end():
             #     print(self.prog[INDEX])
             # else:
@@ -98,8 +122,8 @@ class SyntaxAnalayser():
         return (self.prog[INDEX] == '0') |( self.prog[INDEX] == '1') | (self.prog[INDEX] == '2')| (self.prog[INDEX] == '3') | (self.prog[INDEX] == '4') | (self.prog[INDEX] == '5') | (self.prog[INDEX] == '6') | (self.prog[INDEX] == '7') | (self.prog[INDEX] == '8')| (self.prog[INDEX] == '9') 
 
     def end(self):
-        global INDEX
-        return INDEX >= len(self.prog)  
+        global CHAINE
+        return CHAINE=='FIN' 
 
     def RECO_ENTIER(self) :
         global INDEX
@@ -119,6 +143,7 @@ class SyntaxAnalayser():
 
     def RECO_CHAINE(self):
         global INDEX
+        global CHAINE
         INDEX+=1
         #CHAINE = self.prog[INDEX]
         CHAINE =""
@@ -131,24 +156,37 @@ class SyntaxAnalayser():
             
                 if self.prog[INDEX] !="\'":
                     #print("RETT")
-                    return TYPE.ch
+                    if len(CHAINE)> MAXLENSTR:
+                        RaiseError.MAX_LEN_STR_REACHED()
+                    else:
+                        return TYPE.ch
                 INDEX+=1
                 break
                 
             while self.prog[INDEX] !="\'":
                 CHAINE += self.prog[INDEX]
                 INDEX +=1
+
                 
 
 
     def RECO_IDENT_OU_MOT_RESERVE(self):
         global INDEX
         global CHAINE
+        CHAINE = ""
+        def EST_MOT_RESERVE(mot):
+            return mot in TABLE_MOTS_RESERVES
+
         while self.condition():
-            CHAINE += self.prog[INDEX]
+            CHAINE += (self.prog[INDEX]).upper()
             INDEX +=1 
-    
-        return
+        if len(CHAINE)> LEN_MAX_IDENT:
+            RaiseError.MAX_LEN_IDENT_REACHED()
+
+        if EST_MOT_RESERVE(CHAINE):
+            return TYPE.ident
+        
+        return TYPE.motcle
 
         
     def condition(self):
@@ -193,7 +231,50 @@ class SyntaxAnalayser():
 
 
                 
-            
+    def RECO_SYMB(self):
+        global INDEX
+        match self.prog[INDEX]:
+            case ';' :
+                return TYPE.ptvirg
+            case '.':
+                return TYPE.point
+            case '(':
+                return TYPE.parouv
+            case ')':
+                return TYPE.parenf
+            case '<':
+                if self.prog[INDEX+1] == '=' : 
+                    return TYPE.infe
+                elif self.prog[INDEX+1] == '>' :
+                    return TYPE.diff
+                else :
+                    return TYPE.inf
+            case '>':
+                if self.prog[INDEX+1] == '=' : 
+                    return TYPE.supe
+                else :
+                    return TYPE.sup
+            case '=':
+                return TYPE.eg
+            case '+':
+                return TYPE.plus
+            case '-':
+                return TYPE.moins
+            case '*':
+                return TYPE.mult
+            case '/':
+                return TYPE.divi
+            case ':':
+                if self.prog[INDEX+1] == '=':
+                    return TYPE.aff
+                else :
+                    return TYPE.deuxpts
+            case 'supe':
+                return TYPE.point
+            case '.':
+                return TYPE.point
+            case '.':
+                return TYPE.point
             
 
        
