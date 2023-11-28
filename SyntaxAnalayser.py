@@ -20,7 +20,6 @@ ALPHABET = list(string.ascii_letters)
 TABLE_MOTS_RESERVES = ['CONST' ,'DEBUT','ECRIRE','FIN' ,'LIRE','PROGRAMME','VAR']
 
 TABLE_IDENT = IdentTable()
-
 class SyntaxAnalayser():
 
     def __init__(self,program_file_path):
@@ -295,4 +294,5 @@ class SyntaxAnalayser():
 ######################Test#########################
 
 
-sy = SyntaxAnalayser(TestPathProgram)
+sy =SyntaxAnalayser(TestPathProgram)
+
