@@ -1,3 +1,4 @@
+
 class RaiseError:
     def END_OF_FILE():
        print("Error : End of file")
@@ -11,4 +12,7 @@ class RaiseError:
         exit(1)
     def MAX_LEN_STR_REACHED():
         print("Surpassed max string lenght")
+        exit(1)
+    def MAX_LEN_IDENT_REACHED():
+        print("Surpassed max IDENT lenght.")
         exit(1)
