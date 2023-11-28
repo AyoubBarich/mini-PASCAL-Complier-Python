@@ -14,7 +14,7 @@ class Ident :
         self.name = name
 
 class variable(Ident):
-    def __init__(self,name,adress) -> None:
+    def __init__(self,name,adress="0X0000F") -> None:
         self.name = name
         self.adress = adress
     

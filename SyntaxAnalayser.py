@@ -2,6 +2,7 @@
 from Reader import Reader
 from ErrorHandler import RaiseError
 from Tokens import TYPE
+import Tokens
 import string
 from IdentTable import IdentTable
 from Ident import Ident
@@ -19,15 +20,13 @@ TestPathNumberTest = "./NumberTest.txt"
 TestPathProgram = "./ExampleProg.txt"
 ALPHABET = list(string.ascii_letters)
 TABLE_MOTS_RESERVES = ['CONST' ,'DEBUT','ECRIRE','FIN' ,'LIRE','PROGRAMME','VAR']
-
+LAST_MOTCLE =""
 TABLE_IDENT = IdentTable()
 class SyntaxAnalayser():
 
     def __init__(self,program_file_path):
         self.prog = Reader(program_file_path).content
         while True:
-            print(TABLE_IDENT.table_ident)
-
             self.LIRE_CAR()
         
 
@@ -68,14 +67,16 @@ class SyntaxAnalayser():
             match self.prog[INDEX]:
                 
                 case '\n':
+                    
                     NUM_LIGNE+=1
+                    print(f" -> sauter ligne \nNombre de ligne: {NUM_LIGNE}")
                     INDEX += 1 
-                case ' '|'    ':
+                case ' '|'\t':
                     self.SAUTER_SEPARATEUR()
                     
                 case '{':
                     self.SAUTER_COMMENT()
-                    print(self.prog[INDEX])
+                    #print(self.prog[INDEX])
                 case '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9':
                     self.RECO_ENTIER()
                     #print("Nombre",NOMBRE)
@@ -96,21 +97,24 @@ class SyntaxAnalayser():
 
     def is_seperateur(self):
          global INDEX
-         return (self.prog[INDEX] == ' ' )| (self.prog[INDEX] == '    ') | (self.prog[INDEX] == '\n')
+         return (self.prog[INDEX] == ' ' )| (self.prog[INDEX] == '\t') | (self.prog[INDEX] == '\n')
     # def is_comment(self):
     #     return self.prog[INDEX] == '{'
  
     def SAUTER_SEPARATEUR(self):
         global INDEX
         while not self.end() and self.is_seperateur() :
+            print(f"{self.prog[INDEX]} -> Separateur")
             INDEX+=1
     
     def SAUTER_COMMENT(self):
         global INDEX 
+        COMMENT =""
         counter = 1
         while counter != 0 :  
 
             if not self.end():
+                COMMENT += self.prog[INDEX]
                 #print('dans commentaire',self.prog[INDEX])
                 #print(counter)
                 if self.prog[INDEX] == '{':
@@ -118,6 +122,7 @@ class SyntaxAnalayser():
                 elif self.prog[INDEX] == '}':
                     counter -= 2
                 INDEX += 1
+        print(f"Sauter Commentaire : {COMMENT}")
             
         if(counter != 0 ):
             RaiseError.OPEN_COMMENT_FIELD()
@@ -143,7 +148,8 @@ class SyntaxAnalayser():
         NOMBRE = int(x)
         if NOMBRE > MAXINT:
             RaiseError.MAXINT()
-        return (TYPE.ent ,NOMBRE)
+        print(f"{NOMBRE} -> ent")
+        return TYPE.ent 
     
 
     def RECO_CHAINE(self):
@@ -164,6 +170,7 @@ class SyntaxAnalayser():
                     if len(CHAINE)> MAXLENSTR:
                         RaiseError.MAX_LEN_STR_REACHED()
                     else:
+                        print(f"{CHAINE} -> ch")
                         return TYPE.ch
                 INDEX+=1
                 break
@@ -178,6 +185,7 @@ class SyntaxAnalayser():
     def RECO_IDENT_OU_MOT_RESERVE(self):
         global INDEX
         global CHAINE
+        global LAST_MOTCLE
         CHAINE = ""
         def EST_MOT_RESERVE(mot):
             return mot in TABLE_MOTS_RESERVES
@@ -189,8 +197,12 @@ class SyntaxAnalayser():
             RaiseError.MAX_LEN_IDENT_REACHED()
 
         if EST_MOT_RESERVE(CHAINE):
+            print(f"{CHAINE} -> motcle")
+            LAST_MOTCLE = CHAINE
             return TYPE.motcle
-        TABLE_IDENT.insert(Ident(CHAINE))
+        TABLE_IDENT.insert(Ident(CHAINE),Tokens.get_type_from_chaine(LAST_MOTCLE))
+        print(f"{CHAINE} -> indent")
+        print(f"Current Table Ident : {TABLE_IDENT}")
         return TYPE.ident
         
     def condition(self):
@@ -239,47 +251,57 @@ class SyntaxAnalayser():
         global INDEX
         match self.prog[INDEX]:
             case ';' :
+                print(f"{self.prog[INDEX]} -> ptvirg")
                 return TYPE.ptvirg
             case '.':
+                print(f"{self.prog[INDEX]} -> point")
                 return TYPE.point
             case '(':
+                print(f"{self.prog[INDEX]} -> parouv")
                 return TYPE.parouv
             case ')':
+                print(f"{self.prog[INDEX]} -> parenf")
                 return TYPE.parenf
             case '<':
                 if self.prog[INDEX+1] == '=' : 
+                    print(f"{self.prog[INDEX]} -> infe")
                     return TYPE.infe
                 elif self.prog[INDEX+1] == '>' :
+                    print(f"{self.prog[INDEX]} -> diff")
                     return TYPE.diff
                 else :
+                    print(f"{self.prog[INDEX]} -> inf")
                     return TYPE.inf
             case '>':
                 if self.prog[INDEX+1] == '=' : 
+                    print(f">= -> supe")
                     return TYPE.supe
                 else :
+                    print(f"> -> sup")
                     return TYPE.sup
             case '=':
+                print(f"{self.prog[INDEX]} -> eg")
                 return TYPE.eg
             case '+':
+                print(f"{self.prog[INDEX]} -> plus")
                 return TYPE.plus
             case '-':
+                print(f"{self.prog[INDEX]} -> moins")
                 return TYPE.moins
             case '*':
+                print(f"{self.prog[INDEX]} -> mult")
                 return TYPE.mult
             case '/':
+                print(f"{self.prog[INDEX]} -> divi")
                 return TYPE.divi
             case ':':
                 if self.prog[INDEX+1] == '=':
+                    print(f"=: -> aff")
                     return TYPE.aff
                 else :
+                    print(f"{self.prog[INDEX]} -> deuxpts")
                     return TYPE.deuxpts
-            case 'supe':
-                return TYPE.point
-            case '.':
-                return TYPE.point
-            case '.':
-                return TYPE.point
-            
+
 
        
 

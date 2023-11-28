@@ -2,6 +2,15 @@ from enum import Enum
 from pyrecord import Record
 
 TYPE = Enum('TYPE',['ent','motcle', 'ident', 'ch', 'virg', 'ptvirg', 'point', 'deuxpts', 'parouv', 'parenf', 'inf', 'sup', 'eg', 'plus', 'moins', 'mult', 'divi', 'infe', 'supe', 'diff', 'aff' ])
-TYPE_IDENT = Enum('TYPE_IDENT',['variable','constant'])
+TYPE_IDENT = Enum('TYPE_IDENT',['variable','constant','NotImplemented'])
+
+def get_type_from_chaine(CHAINE):
+    match CHAINE:
+        case "VAR":
+            return TYPE_IDENT.variable
+        case "CONST":
+            return TYPE_IDENT.constant
+        case _:
+            return TYPE_IDENT.NotImplemented
 
 # TYPE_IDENT_REC = Record.create_type('TYPE_IDENT_REC','name', 'TYPE_IDENT','INFO',INFO = match TYPE_IDENT )
