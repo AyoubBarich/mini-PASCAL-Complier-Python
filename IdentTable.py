@@ -1,5 +1,5 @@
 from Pointer import Pointer
-from Ident import Ident,variable,constant
+from Ident import Ident,variable,constant, programme
 from Tokens import TYPE_IDENT
 NB_IDENT_MAX = 100
 
@@ -21,8 +21,10 @@ class IdentTable():
                 self.add(variable(ident))
             case TYPE_IDENT.constant:
                 self.add(constant(ident))
+            # case TYPE_IDENT.prog:
+            #     self.add(programme(ident))
             case _:
-                print(f"Type :{type}")
+                
                 return
         
     def search(self,ident:Ident):

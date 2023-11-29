@@ -103,9 +103,10 @@ class SyntaxAnalayser():
  
     def SAUTER_SEPARATEUR(self):
         global INDEX
+        print(f"{self.prog[INDEX]} -> Separateur")
         while not self.end() and self.is_seperateur() :
-            print(f"{self.prog[INDEX]} -> Separateur")
             INDEX+=1
+        
     
     def SAUTER_COMMENT(self):
         global INDEX 
@@ -275,6 +276,7 @@ class SyntaxAnalayser():
             case '>':
                 if self.prog[INDEX+1] == '=' : 
                     print(f">= -> supe")
+                    INDEX +=1
                     return TYPE.supe
                 else :
                     print(f"> -> sup")
@@ -296,6 +298,7 @@ class SyntaxAnalayser():
                 return TYPE.divi
             case ':':
                 if self.prog[INDEX+1] == '=':
+                    INDEX +=1
                     print(f"=: -> aff")
                     return TYPE.aff
                 else :
