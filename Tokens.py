@@ -1,5 +1,5 @@
 from enum import Enum
-from pyrecord import Record
+
 
 TYPE = Enum('TYPE',['ent','motcle', 'ident', 'ch', 'virg', 'ptvirg', 'point', 'deuxpts', 'parouv', 'parenf', 'inf', 'sup', 'eg', 'plus', 'moins', 'mult', 'divi', 'infe', 'supe', 'diff', 'aff' ])
 TYPE_IDENT = Enum('TYPE_IDENT',['variable','constant','NotImplemented','prog'])
