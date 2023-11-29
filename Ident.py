@@ -14,7 +14,7 @@ class Ident :
         self.name = name
 
 class variable(Ident):
-    def __init__(self,name,adress) -> None:
+    def __init__(self,name,adress="0X0000F") -> None:
         self.name = name
         self.adress = adress
     
@@ -32,6 +32,14 @@ class constant(Ident):
     def get_type(self):
         return TYPE_IDENT.constant
     
+class programme(Ident):
+    def __init__(self, name, block ) -> None:
+        self.name = name
+        self.block = block
+    def get_attribute(self):
+        return self.block
+    def get_type(self):
+        return TYPE_IDENT.PROG
 # class function(Ident):
 #     def __init__(self,name,nbparam) :
 #         self.name = name
