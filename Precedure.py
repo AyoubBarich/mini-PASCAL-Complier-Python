@@ -165,8 +165,175 @@ class Procedure:
 
 
 
-    def BLOC(self):
+    def BLOC(self,UNILEX:UNILEX_TYPE):
+        fin = None 
+        erreur = None
+        if (UNILEX.equals(UNILEX_TYPE("DEBUT",TYPE.motcle))):
+            UNILEX = self.ANALEX(UNILEX)
+            if self.INSTRUCTION(UNILEX):
+                UNILEX = self.ANALEX(UNILEX)
+                fin = False
+                erreur = False
+                if (UNILEX.type == TYPE.ptvirg):
+                    UNILEX = self.ANALEX(UNILEX)
+                    erreur = not self.INSTRUCTION(UNILEX)
+                    UNILEX = self.ANALEX(UNILEX)
+                    if erreur :
+                        fin = True
+                else :
+                    fin = True
+                while not fin :
+                    if (UNILEX.type == TYPE.ptvirg):
+                        UNILEX = self.ANALEX(UNILEX)
+                        erreur = not self.INSTRUCTION(UNILEX)
+                        UNILEX = self.ANALEX(UNILEX)
+                        if erreur :
+                            fin = True
+                    else :
+                        fin = True
+                if erreur :
+                    RaiseError.SYNTAX_ERR_BLOC_NOT_INST()
+                    return False
+                elif UNILEX == UNILEX_TYPE("FIN",TYPE.motcle):
+                    UNILEX = self.ANALEX(UNILEX)
+                    return True
+                else :
+                    RaiseError.SYNTAX_ERR_BLOC_PTVIRG()
+                    return False
+            else:
+                RaiseError.SYNTAX_ERR_BLOC_NOT_INST()
+                return False
+        else:
+            RaiseError.SYNTAX_ERR_BLOC_DEBUT_EXPECTED()
+            return False
+        
+    def PROG(self,UNILEX:UNILEX_TYPE):
+        fin = None
+        erreur1 = None
+        erreur2 = None
+        if(UNILEX==UNILEX_TYPE("PROGRAMME",TYPE.motcle)):
+            UNILEX = self.ANALEX(UNILEX)
+            if(UNILEX.type == TYPE.ident):
+                UNILEX = self.ANALEX(UNILEX)
+                if(UNILEX.type == TYPE.ptvirg):
+                    UNILEX = self.ANALEX(UNILEX)
+                    erreur1 = not self.DECL_CONST(UNILEX) 
+                    erreur2 = not self.DECL_VAR(UNILEX)
+                    self.BLOC(UNILEX)
+                    if(UNILEX.type == TYPE.point):
+                        return True
+                    else:
+                        RaiseError.SYNTAX_ERR_PROG_OPEN()
+                        return False
+                else:
+                    RaiseError.SYNTAX_ERR_PROG_PTVIRG()
+                    return False
+            else:
+                RaiseError.SYNTAX_ERR_PROG_IDENT_EXPECTED()
+                return False
+        else:
+            RaiseError.SYNATX_ERR_PROG_MISSIG_KEYWORD()
+            return False
+    def DECL_CONST(self,UNILEX):
+        fin = None
+        erreur1 = None
+        erreur2 = None
+        erreur3 = None
+        if (UNILEX == UNILEX_TYPE("CONST",TYPE.motcle)):
+            UNILEX = self.ANALEX(UNILEX)
+            if(UNILEX.type == TYPE.ident):
+                UNILEX = self.ANALEX(UNILEX)
+                if(UNILEX.type == TYPE.eg):
+                    UNILEX = self.ANALEX(UNILEX)
+                    if(UNILEX.type == TYPE.ent)or (UNILEX.type == TYPE.ch):
+                        fin = False
+                        erreur1 = False
+                        erreur2 = False
+                        erreur3 = False
+                        UNILEX = self.ANALEX(UNILEX)
+
+                        if (UNILEX.type == TYPE.virg):
+                            UNILEX = self.ANALEX(UNILEX)
+                            if(UNILEX.type == TYPE.ident):
+                                UNILEX = self.ANALEX(UNILEX)
+                                if(UNILEX.type == TYPE.eg):
+                                    UNILEX = self.ANALEX(UNILEX)
+                                    if(UNILEX.type == TYPE.ent or UNILEX.type == TYPE.ch):
+                                        UNILEX = self.ANALEX(UNILEX)
+                                        fin = True 
+                                    else :
+                                        erreur1 = True
+                                else:
+                                    erreur2 = True
+                            else :
+                                erreur3 =True
+                        else:
+                            fin = True
+                        while not fin:
+                            if (UNILEX.type == TYPE.virg):
+                                UNILEX = self.ANALEX(UNILEX)
+                                if(UNILEX.type == TYPE.ident):
+                                    UNILEX = self.ANALEX(UNILEX)
+                                    if(UNILEX.type == TYPE.eg):
+                                        UNILEX = self.ANALEX(UNILEX)
+                                        if(UNILEX.type == TYPE.ent or UNILEX.type == TYPE.ch):
+                                            UNILEX = self.ANALEX(UNILEX)
+                                            fin = True 
+                                        else :
+                                            erreur1 = True
+                                    else:
+                                        erreur2 = True
+                                else :
+                                    erreur3 =True
+                            else:
+                                fin = True
+                        if erreur1:
+                            RaiseError.SYNTAX_ERR_CONST_TYPE()
+                            return False
+                        if erreur2:
+                            RaiseError.SYNTAX_ERR_CONST_EG_EXPECTED()
+                            return False
+                        if erreur3 :
+                            RaiseError.SYNTAX_ERR_CONST_IDENT_EXPECTED()
+                            return False
+                        elif UNILEX.type == TYPE.ptvirg:
+                            UNILEX = self.ANALEX(UNILEX)
+                            return True
+                        else:
+                            RaiseError.SYNTAX_ERR_CONST_PTVIRG()
+                            return False
+                        
+                    else:
+                        RaiseError.SYNTAX_ERR_CONST_TYPE()
+                        return False
+                else:
+                    RaiseError.SYNTAX_ERR_CONST_EG_EXPECTED()
+                    return False
+            else:
+                RaiseError.SYNTAX_ERR_CONST_IDENT_EXPECTED()
+                return False
+        else:
+            RaiseError.SYNTAX_ERR_CONST_MOTCLE_EXPECTED()
+            return False
+
+    def DECL_VAR():
         return
+    def ECR_EXP():
+        return
+    def EXP():
+        return
+    def SUITE_TERME():
+        return
+    def TERME():
+        return
+    def OP_BIN():
+        return
+
+
+
+
+
+
 
     
 
