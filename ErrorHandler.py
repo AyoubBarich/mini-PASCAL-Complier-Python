@@ -2,7 +2,7 @@
 class RaiseError:
     def END_OF_FILE():
        print("Error : End of file")
-       exit(0)
+       
     def OPEN_COMMENT_FIELD():
         print("Error : Bracket not closed")
         exit(1)
@@ -15,4 +15,8 @@ class RaiseError:
         exit(1)
     def MAX_LEN_IDENT_REACHED():
         print("Surpassed max IDENT lenght.")
+        exit(1)
+
+    def UNILEX_NOT_FOUND():
+        print("UNILEX not found")
         exit(1)

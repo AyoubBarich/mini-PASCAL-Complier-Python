@@ -1,10 +1,10 @@
 PROGRAMME exemple ;
-VAR nb;
+{VAR nb;}
 DEBUT
-    ECRIRE('Entrez un nombre entier: ')
-    LIRE(nb)
+    {ECRIRE('Entrez un nombre entier: ');}
+    LIRE(nb);
     nb := nb*nb;
-    {this a comment}
+    {this a comment};
     ECRIRE();
     ECRIRE('L''e carré du nombre est: ', nb);
 FIN
