@@ -316,18 +316,125 @@ class Procedure:
             RaiseError.SYNTAX_ERR_CONST_MOTCLE_EXPECTED()
             return False
 
-    def DECL_VAR():
-        return
-    def ECR_EXP():
-        return
-    def EXP():
-        return
-    def SUITE_TERME():
-        return
-    def TERME():
-        return
-    def OP_BIN():
-        return
+    def DECL_VAR(self,UNILEX):
+        fin = None
+        erreur1= None
+        
+        if (UNILEX == UNILEX_TYPE("VAR", TYPE.motcle)):
+            UNILEX = self.ANALEX(UNILEX)
+            if(UNILEX.type == TYPE.ident):
+                fin = False
+                erreur1 = False
+                UNILEX = self.ANALEX(UNILEX)
+                if(UNILEX.type == TYPE.virg):
+                    fin = False
+                    erreur1 = False
+                    
+                    UNILEX = self.ANALEX(UNILEX)
+                    if(UNILEX == TYPE.ident):
+                        UNILEX = self.ANALEX(UNILEX)
+                        fin = True
+                    else:
+                        fin = True
+                        erreur1 = True
+                else :
+                    fin = True
+                    
+                while not fin:
+                    if UNILEX.type == TYPE.virg):
+                        UNILEX = self.ANALEX(UNILEX)
+                        if(UNILEX == TYPE.ident):
+                            UNILEX = self.ANALEX(UNILEX)
+                            fin = True
+                        else:
+                            fin = True
+                            erreur1 = True
+                    else:
+                        fin = True
+                if erreur1:
+                    RaiseError.SYNTAX_ERR_VAR_IDENT_EXPECTED()
+                    return False
+                elif UNILEX.type == TYPE.ptvirg:
+                    UNILEX = self.ANALEX(UNILEX)
+                    return True
+                else:
+                    RaiseError.SYNTAX_ERR_VAR_OPENFIELD()
+                    return False
+            else:
+                RaiseError.SYNTAX_ERR_IDENT_EXPECTED()
+                return False
+        else:
+            RaiseError.SYNTAX_ERR_VAR_INCORRECT()
+            return False
+
+
+
+        
+    def ECR_EXP(self,UNILEX):
+        if self.EXP(UNILEX) :
+            return True
+        elif UNILEX.type == TYPE.ch:
+            UNILEX = self.ANALEX(UNILEX)
+            return True
+        else :
+            return False
+        
+    def EXP(self,UNILEX):
+        return self.TERME(UNILEX) or self.SUITE_TERME(UNILEX)
+    
+    def SUITE_TERME(self,UNILEX):
+        if self.OP_BIN(UNILEX):
+            UNILEX = self.ANALEX(UNILEX)
+            if self.EXP(UNILEX):
+                UNILEX = self.ANALEX(UNILEX)
+                return True
+            else:
+                RaiseError.SYNTAX_ERR_SUITE_TERME_EXP_EXPEDCTED()
+                return False
+        elif UNILEX == None:
+            return True
+        else:
+            RaiseError.SYNTAX_ERR_SUITE_TERME_INVALID_FORMAT()
+            return False
+        
+        
+    def TERME(self,UNILEX):
+        if (UNILEX.type == TYPE.ent ):
+            UNILEX = self.ANALEX(UNILEX)
+            return True
+        if UNILEX.type == TYPE.ident:
+            UNILEX = self.ANALEX(UNILEX)
+            return True
+        if UNILEX.type == TYPE.moins:
+            UNILEX = self.ANALEX(UNILEX)
+            if (self.TERME(UNILEX)):
+                UNILEX = self.ANALEX(UNILEX)
+                return True
+            else:
+                RaiseError.SYNTAX_ERR_TERME_TERME_EXPECTED()
+                return False
+
+        
+        if UNILEX.type == TYPE.parouv:
+            UNILEX = self.ANALEX(UNILEX)
+            if self.EXP(UNILEX):
+                UNILEX = self.ANALEX(UNILEX):
+                if UNILEX.type  == TYPE.parenf:
+                    UNILEX = self.ANALEX(UNILEX)
+                    return True
+                else:
+                    RaiseError.SYNTAX_ERR_TERME_PAROUV_EXPECTED()
+                    return False
+            else:
+                RaiseError.SYNTAX_ERR_TERME_EXP_INCORRECT()
+                return False 
+        RaiseError.SYNTAX_ERR_TERME_INCORRECT_FORMAT()
+        return False
+        
+
+        
+    def OP_BIN(self,UNILEX):
+        return UNILEX.type == TYPE.plus or UNILEX.type == TYPE.moins or UNILEX.type == TYPE.mult or UNILEX.type == TYPE.divi
 
 
 
