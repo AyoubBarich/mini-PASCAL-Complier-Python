@@ -20,3 +20,4 @@ class RaiseError:
     def UNILEX_NOT_FOUND():
         print("UNILEX not found")
         exit(1)
+    

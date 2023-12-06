@@ -7,7 +7,7 @@ from UNILEX_TYPE import UNILEX_TYPE
 
 class Procedure:
     def __init__(self,path) -> None:
-        
+        global UNILEX 
         self.SyntaxAnalayser=SyntaxAnalayser
         self.Analyzed_Program=self.SyntaxAnalayser.SyntaxAnalayser(path)
         self.UNILEX_LIST=self.SyntaxAnalayser.UNILEX
@@ -119,12 +119,12 @@ class Procedure:
     def ECRITURE(self,UNILEX:UNILEX_TYPE):
         fin = None 
         erreur = None
-        if(UNILEX.equals(UNILEX("ECRIRE",TYPE.motcle))):
+        if(UNILEX==UNILEX("ECRIRE",TYPE.motcle)):
             UNILEX = self.ANALEX()
             if (UNILEX.type == TYPE.parouv ):
                 UNILEX = self.ANALEX(UNILEX)
                 erreur = False
-                if (self.ECR_EXP):
+                if (self.ECR_EXP(UNILEX)):
                     UNILEX = self.ANALEX(UNILEX)
                     fin = False
                     if(UNILEX.type == TYPE.virg):
@@ -168,7 +168,8 @@ class Procedure:
     def BLOC(self,UNILEX:UNILEX_TYPE):
         fin = None 
         erreur = None
-        if (UNILEX.equals(UNILEX_TYPE("DEBUT",TYPE.motcle))):
+        print("BLOC",UNILEX)
+        if (UNILEX==UNILEX_TYPE("DEBUT",TYPE.motcle)):
             UNILEX = self.ANALEX(UNILEX)
             if self.INSTRUCTION(UNILEX):
                 UNILEX = self.ANALEX(UNILEX)
@@ -217,7 +218,7 @@ class Procedure:
                 UNILEX = self.ANALEX(UNILEX)
                 if(UNILEX.type == TYPE.ptvirg):
                     UNILEX = self.ANALEX(UNILEX)
-                    erreur1 = not self.DECL_CONST(UNILEX) 
+                    #erreur1 = not self.DECL_CONST(UNILEX) 
                     erreur2 = not self.DECL_VAR(UNILEX)
                     self.BLOC(UNILEX)
                     if(UNILEX.type == TYPE.point):
@@ -335,13 +336,15 @@ class Procedure:
                         UNILEX = self.ANALEX(UNILEX)
                         fin = True
                     else:
+                        
                         fin = True
                         erreur1 = True
                 else :
+                    
                     fin = True
                     
                 while not fin:
-                    if UNILEX.type == TYPE.virg):
+                    if UNILEX.type == TYPE.virg:
                         UNILEX = self.ANALEX(UNILEX)
                         if(UNILEX == TYPE.ident):
                             UNILEX = self.ANALEX(UNILEX)
@@ -350,12 +353,15 @@ class Procedure:
                             fin = True
                             erreur1 = True
                     else:
+                        UNILEX = self.ANALEX(UNILEX)
+                        
                         fin = True
                 if erreur1:
                     RaiseError.SYNTAX_ERR_VAR_IDENT_EXPECTED()
                     return False
                 elif UNILEX.type == TYPE.ptvirg:
                     UNILEX = self.ANALEX(UNILEX)
+                    print(UNILEX)
                     return True
                 else:
                     RaiseError.SYNTAX_ERR_VAR_OPENFIELD()
@@ -391,13 +397,10 @@ class Procedure:
             else:
                 RaiseError.SYNTAX_ERR_SUITE_TERME_EXP_EXPEDCTED()
                 return False
-        elif UNILEX == None:
-            return True
         else:
-            RaiseError.SYNTAX_ERR_SUITE_TERME_INVALID_FORMAT()
-            return False
+            return True
         
-        
+
     def TERME(self,UNILEX):
         if (UNILEX.type == TYPE.ent ):
             UNILEX = self.ANALEX(UNILEX)
@@ -418,7 +421,7 @@ class Procedure:
         if UNILEX.type == TYPE.parouv:
             UNILEX = self.ANALEX(UNILEX)
             if self.EXP(UNILEX):
-                UNILEX = self.ANALEX(UNILEX):
+                UNILEX = self.ANALEX(UNILEX)
                 if UNILEX.type  == TYPE.parenf:
                     UNILEX = self.ANALEX(UNILEX)
                     return True
@@ -439,9 +442,15 @@ class Procedure:
 
 
 
+    def ANASYNT(self):
+        if (self.PROG(self.UNILEX_LIST[0])):
+            print("Your programme is correct")
+        else: 
+            RaiseError.SYNTAX_ERR()
+
 
 
 
     
 
-Procedure("./ExampleProg.txt").RUN()
+Procedure("./ExampleProg.txt").ANASYNT()
