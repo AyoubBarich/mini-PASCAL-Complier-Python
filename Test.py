@@ -12,7 +12,7 @@ class TestReader(unittest.TestCase):
     # def test_SyntaxAnalyser():
     #     def test_SAUTER_SEPARATEUR():
         
-            
+    def testLECTURE(self)            
 
 
         
