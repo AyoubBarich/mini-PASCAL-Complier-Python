@@ -1,4 +1,3 @@
-
 from Reader import Reader
 from ErrorHandler import RaiseError
 from Tokens import TYPE
