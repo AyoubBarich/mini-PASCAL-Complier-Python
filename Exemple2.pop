@@ -1,0 +1,6 @@
+PROGRAMME exemple;
+VAR nb;
+CONST c = 'Quentin';
+DEBUT
+    ECRIRE('Salut',c);
+FIN.
