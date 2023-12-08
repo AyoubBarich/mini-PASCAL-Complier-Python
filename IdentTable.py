@@ -14,18 +14,21 @@ class IdentTable():
 
     def __init__(self) -> None:
         self.table_ident = {}
+        self.MEME_VAR ={}
 
-    def insert(self,ident :Ident,type):
-        match type:
-            case TYPE_IDENT.variable :
-                self.add(variable(ident))
-            case TYPE_IDENT.constant:
-                self.add(constant(ident))
+    def insert(self,ident :Ident):
+            match ident.get_type():
+                case TYPE_IDENT.variable:
+                    self.add(ident)
+                    self.MEME_VAR[ident.get_attribute()] = ident
+                case TYPE_IDENT.constant:
+                    self.add(ident)
+                    self.MEME_VAR[ident.get_attribute()] = ident
+
+            
             # case TYPE_IDENT.prog:
             #     self.add(programme(ident))
-            case _:
-                
-                return
+
         
     def search(self,ident:Ident):
         return self.table_ident.get(ident.get_name())
@@ -33,22 +36,23 @@ class IdentTable():
 
 
     def add(self,ident:Ident):
-        try:
-            self.table_ident[ident.get_name()].append(ident)
-        except:
-            self.table_ident[ident.get_name()] = [ident]
+
+        self.table_ident[ident.get_name()] = ident
+       
 
 
     def __str__(self) -> str:
         res = ""
         for key in self.table_ident:
-            res += key.name + " --> "
-            for values in self.table_ident[key]:
-                res += values.get_attribute()
+            res += key + " --> "
+            res += str(self.table_ident[key].get_attribute())
             res += "\n"
         return res
             
-
+    def contains(self,var):
+        print(self.MEME_VAR)
+        list_of_Names = [(varis.name)  for varis in self.MEME_VAR.values()]
+        return var in list_of_Names
 
 # table = IdentTable()
 # x = constant('x',4)

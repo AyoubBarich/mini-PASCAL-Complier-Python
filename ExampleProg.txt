@@ -1,10 +1,13 @@
 PROGRAMME exemple ;
 {VAR nb;}
+CONST nb = 'BENHAMOU';
 DEBUT
-    {ECRIRE('Entrez un nombre entier: ');}
+    ECRIRE('Entrez un nombre entier: ');
     LIRE(nb);
-    nb := nb*nb;
+    nb := nb*nb
     {this a comment};
     ECRIRE();
     ECRIRE('L''e carré du nombre est: ', nb);
+    ECRIRE('MERCI M.', b);
 FIN
+.

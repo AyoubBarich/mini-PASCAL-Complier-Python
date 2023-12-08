@@ -9,8 +9,9 @@ from UNILEX_TYPE import UNILEX_TYPE
 # CARLU=''
 NUM_LIGNE=0
 INDEX = 0
-NOMBRE = None
+NOMBRE_LIST = []
 MAXINT= 32767
+CHAINE_LIST=[]
 CHAINE=''
 MAXLENSTR=50
 LEN_MAX_IDENT = 20
@@ -27,8 +28,11 @@ class SyntaxAnalayser():
 
     def __init__(self,program_file_path):
         
-        
         self.prog = Reader(program_file_path).content
+        print(self.prog)
+        self.NOMBER_LIST = NOMBRE_LIST
+        self.CHAINE_LIST = CHAINE_LIST
+        self.END = False
         while not self.end():
             self.CHAINE = CHAINE
             self.LIRE_CAR()
@@ -86,7 +90,7 @@ class SyntaxAnalayser():
                     #print(self.prog[INDEX])
                 case '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9':
                     self.RECO_ENTIER()
-                    UNILEX.append(UNILEX_TYPE(NOMBRE,TYPE.ent) )
+                    UNILEX.append(UNILEX_TYPE(NOMBRE_LIST[len(NOMBRE_LIST)-1],TYPE.ent) )
                     #print("Nombre",NOMBRE)
                 case '\'':
                     self.RECO_CHAINE()
@@ -143,11 +147,20 @@ class SyntaxAnalayser():
 
     def end(self):
         global CHAINE
-        return CHAINE=='FIN' 
+        try:
+            if self.prog[INDEX]=='.':
+                print(f"{self.prog[INDEX]} -> point")
+                UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.point))
+                return  True
+            return False
+        except:
+            return True
+
+        
 
     def RECO_ENTIER(self) :
         global INDEX
-        global NOMBRE
+        global NOMBRE_LIST
         x =''
         while (self.is_entier()) :            
             if not self.end():
@@ -155,10 +168,10 @@ class SyntaxAnalayser():
                 INDEX += 1 
             else:
                 RaiseError.END_OF_FILE()
-        NOMBRE = int(x)
-        if NOMBRE > MAXINT:
+        NOMBRE_LIST.append(int(x))
+        if int(x) > MAXINT:
             RaiseError.MAXINT()
-        print(f"{NOMBRE} -> ent")
+        print(f"{int(x)} -> ent")
         return TYPE.ent 
     
 
@@ -181,6 +194,7 @@ class SyntaxAnalayser():
                         RaiseError.MAX_LEN_STR_REACHED()
                     else:
                         print(f"{CHAINE} -> ch")
+                        CHAINE_LIST.append(CHAINE)
                         return TYPE.ch
                 INDEX+=1
                 break
@@ -212,7 +226,7 @@ class SyntaxAnalayser():
             LAST_MOTCLE = CHAINE
             UNILEX.append(UNILEX_TYPE(CHAINE,TYPE.motcle))
             return TYPE.motcle
-        TABLE_IDENT.insert(Ident(CHAINE),Tokens.get_type_from_chaine(LAST_MOTCLE))
+        #TABLE_IDENT.insert(Ident(CHAINE),Tokens.get_type_from_chaine(LAST_MOTCLE))
         print(f"{CHAINE} -> indent")
         print(f"Current Table Ident : {TABLE_IDENT}")
         UNILEX.append(UNILEX_TYPE(CHAINE,TYPE.ident))
@@ -335,6 +349,15 @@ class SyntaxAnalayser():
                     print(f"{self.prog[INDEX]} -> deuxpts")
                     UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.deuxpts))
                     return TYPE.deuxpts
+            case ',':
+                    print(f"{self.prog[INDEX]} -> virg")
+                    UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.virg))
+                    return TYPE.virg
+            case '.':
+                    print(f"{self.prog[INDEX]} -> point")
+                    UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.point))
+                    return TYPE.point
+
 
     def ANALEX(self,unit:UNILEX_TYPE):
         global UNILEX 
