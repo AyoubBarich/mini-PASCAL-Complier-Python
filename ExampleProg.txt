@@ -1,6 +1,6 @@
 PROGRAMME exemple ;
-{VAR nb;}
-CONST nb = 'BENHAMOU';
+VAR nb;
+CONST b = 'BENHAMOU';
 DEBUT
     ECRIRE('Entrez un nombre entier: ');
     LIRE(nb);
