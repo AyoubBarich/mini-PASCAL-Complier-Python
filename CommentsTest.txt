@@ -1,5 +1,0 @@
-PROGRAMME comment;
-{{{{{{{{{{{hello{}}}}}}}}}}}};
-{{{}{}camille is the best{{}}}};
-
-FIN

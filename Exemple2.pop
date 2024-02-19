@@ -1,6 +1,6 @@
 PROGRAMME exemple;
 VAR nb;
-CONST c = 'Quentin';
+CONST c = 'Bob';
 DEBUT
     ECRIRE('Salut',c);
 FIN.

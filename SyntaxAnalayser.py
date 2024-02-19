@@ -29,7 +29,7 @@ class SyntaxAnalayser():
     def __init__(self,program_file_path):
         
         self.prog = Reader(program_file_path).content
-        print(self.prog)
+        # print(self.prog)
         self.NOMBER_LIST = NOMBRE_LIST
         self.CHAINE_LIST = CHAINE_LIST
         self.END = False
@@ -81,7 +81,7 @@ class SyntaxAnalayser():
                 case '\n':
                     
                     NUM_LIGNE+=1
-                    print(f" -> sauter ligne \nNombre de ligne: {NUM_LIGNE}")
+                    # print(f" -> sauter ligne \nNombre de ligne: {NUM_LIGNE}")
                     INDEX += 1 
                 case ' '|'\t':
                     self.SAUTER_SEPARATEUR()
@@ -116,7 +116,7 @@ class SyntaxAnalayser():
  
     def SAUTER_SEPARATEUR(self):
         global INDEX
-        print(f"{self.prog[INDEX]} -> Separateur")
+        # print(f"{self.prog[INDEX]} -> Separateur")
         while not self.end() and self.is_seperateur() :
             INDEX+=1
         
@@ -136,7 +136,7 @@ class SyntaxAnalayser():
                 elif self.prog[INDEX] == '}':
                     counter -= 2
                 INDEX += 1
-        print(f"Sauter Commentaire : {COMMENT}")
+        # print(f"Sauter Commentaire : {COMMENT}")
             
         if(counter != 0 ):
             RaiseError.OPEN_COMMENT_FIELD()
@@ -149,7 +149,7 @@ class SyntaxAnalayser():
         global CHAINE
         try:
             if self.prog[INDEX]=='.':
-                print(f"{self.prog[INDEX]} -> point")
+                # print(f"{self.prog[INDEX]} -> point")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.point))
                 return  True
             return False
@@ -171,7 +171,7 @@ class SyntaxAnalayser():
         NOMBRE_LIST.append(int(x))
         if int(x) > MAXINT:
             RaiseError.MAXINT()
-        print(f"{int(x)} -> ent")
+        # print(f"{int(x)} -> ent")
         return TYPE.ent 
     
 
@@ -193,7 +193,7 @@ class SyntaxAnalayser():
                     if len(CHAINE)> MAXLENSTR:
                         RaiseError.MAX_LEN_STR_REACHED()
                     else:
-                        print(f"{CHAINE} -> ch")
+                        # print(f"{CHAINE} -> ch")
                         CHAINE_LIST.append(CHAINE)
                         return TYPE.ch
                 INDEX+=1
@@ -222,13 +222,13 @@ class SyntaxAnalayser():
             RaiseError.MAX_LEN_IDENT_REACHED()
 
         if EST_MOT_RESERVE(CHAINE):
-            print(f"{CHAINE} -> motcle")
+            # print(f"{CHAINE} -> motcle")
             LAST_MOTCLE = CHAINE
             UNILEX.append(UNILEX_TYPE(CHAINE,TYPE.motcle))
             return TYPE.motcle
         #TABLE_IDENT.insert(Ident(CHAINE),Tokens.get_type_from_chaine(LAST_MOTCLE))
-        print(f"{CHAINE} -> indent")
-        print(f"Current Table Ident : {TABLE_IDENT}")
+        # print(f"{CHAINE} -> indent")
+        # print(f"Current Table Ident : {TABLE_IDENT}")
         UNILEX.append(UNILEX_TYPE(CHAINE,TYPE.ident))
         return TYPE.ident
         
@@ -279,92 +279,92 @@ class SyntaxAnalayser():
         global UNILEX
         match self.prog[INDEX]:
             case ';' :
-                print(f"{self.prog[INDEX]} -> ptvirg")
+                # print(f"{self.prog[INDEX]} -> ptvirg")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX], TYPE.ptvirg))
                 return TYPE.ptvirg
             case '.':
-                print(f"{self.prog[INDEX]} -> point")
+                # print(f"{self.prog[INDEX]} -> point")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.point))
                 return TYPE.point
             case '(':
-                print(f"{self.prog[INDEX]} -> parouv")
+                # print(f"{self.prog[INDEX]} -> parouv")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.parouv))
                 return TYPE.parouv
             case ')':
-                print(f"{self.prog[INDEX]} -> parenf")
+                # print(f"{self.prog[INDEX]} -> parenf")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.parenf))
                 return TYPE.parenf
             case '<':
                 if self.prog[INDEX+1] == '=' : 
-                    print(f"{self.prog[INDEX]} -> infe")
+                    # print(f"{self.prog[INDEX]} -> infe")
                     UNILEX.append(UNILEX_TYPE(">=",TYPE.infe))
                     INDEX+=1
                     return TYPE.infe
                 elif self.prog[INDEX+1] == '>' :
-                    print(f"{self.prog[INDEX]} -> diff")
+                    # print(f"{self.prog[INDEX]} -> diff")
                     UNILEX.append(UNILEX_TYPE("<>",TYPE.diff))
                     INDEX+=1
                     return TYPE.diff
                 else :
-                    print(f"{self.prog[INDEX]} -> inf")
+                    # print(f"{self.prog[INDEX]} -> inf")
                     UNILEX.append(UNILEX_TYPE(self.prog[INDEX], TYPE.inf))
                     return TYPE.inf
             case '>':
                 if self.prog[INDEX+1] == '=' : 
-                    print(f">= -> supe")
+                    # print(f">= -> supe")
                     UNILEX.append(UNILEX_TYPE(">=",TYPE.supe))
                     INDEX +=1
                     return TYPE.supe
                 else :
-                    print(f"> -> sup")
+                    # print(f"> -> sup")
                     UNILEX.append(UNILEX_TYPE(">" , TYPE.sup))
                     return TYPE.sup
             case '=':
-                print(f"{self.prog[INDEX]} -> eg")
+                # print(f"{self.prog[INDEX]} -> eg")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.eg))
                 return TYPE.eg
             case '+':
-                print(f"{self.prog[INDEX]} -> plus")
+                # print(f"{self.prog[INDEX]} -> plus")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.plus))
                 return TYPE.plus
             case '-':
-                print(f"{self.prog[INDEX]} -> moins")
+                # print(f"{self.prog[INDEX]} -> moins")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.moins))
                 return TYPE.moins
             case '*':
-                print(f"{self.prog[INDEX]} -> mult")
+                # print(f"{self.prog[INDEX]} -> mult")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.mult))
                 return TYPE.mult
             case '/':
-                print(f"{self.prog[INDEX]} -> divi")
+                # print(f"{self.prog[INDEX]} -> divi")
                 UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.divi))
                 return TYPE.divi
             case ':':
                 if self.prog[INDEX+1] == '=':
                     INDEX +=1
-                    print(f":= -> aff")
+                    # print(f":= -> aff")
                     UNILEX.append(UNILEX_TYPE(":=",TYPE.aff))
                     return TYPE.aff
                 else :
-                    print(f"{self.prog[INDEX]} -> deuxpts")
+                    # print(f"{self.prog[INDEX]} -> deuxpts")
                     UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.deuxpts))
                     return TYPE.deuxpts
             case ',':
-                    print(f"{self.prog[INDEX]} -> virg")
+                    # print(f"{self.prog[INDEX]} -> virg")
                     UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.virg))
                     return TYPE.virg
             case '.':
-                    print(f"{self.prog[INDEX]} -> point")
+                    # print(f"{self.prog[INDEX]} -> point")
                     UNILEX.append(UNILEX_TYPE(self.prog[INDEX],TYPE.point))
                     return TYPE.point
 
 
     def ANALEX(self,unit:UNILEX_TYPE):
         global UNILEX 
-        print(UNILEX)
+        # print(UNILEX)
         try:
             index_unit = UNILEX.index(unit)
-            print(index_unit)
+            # print(index_unit)
             UNILEX.pop(index_unit)
             return UNILEX[index_unit]
         except :

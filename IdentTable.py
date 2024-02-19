@@ -50,7 +50,7 @@ class IdentTable():
         return res
             
     def contains(self,var):
-        print(self.MEME_VAR)
+        #print(self.MEME_VAR)
         list_of_Names = [(varis.name)  for varis in self.MEME_VAR.values()]
         return var in list_of_Names
 

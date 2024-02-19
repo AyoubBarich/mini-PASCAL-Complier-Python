@@ -47,8 +47,8 @@ class Procedure:
         for unit in self.UNILEX_LIST:
             match unit:
                 case UNILEX_TYPE("LIRE", TYPE.motcle):
-                    print(self.LECTURE(unit))
                     #print(self.LECTURE(unit))
+                    print("")
             
     
     def INSTRUCTION(self):

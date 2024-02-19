@@ -1,4 +1,0 @@
-PROGRAMME numberRec;
-
-VAR x;
-x = 999999;
