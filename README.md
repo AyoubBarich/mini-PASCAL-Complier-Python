@@ -20,3 +20,6 @@ This repository hosts a compiler implemented in Python for a language inspired b
 1. Clone the repository:
    ```bash
    git clone https://github.com/AyoubBarich/mini-PASCAL-Complier-Python/
+2. Compile a basic programme:
+   ```bash
+   python3 compile.py programme_file_directory
